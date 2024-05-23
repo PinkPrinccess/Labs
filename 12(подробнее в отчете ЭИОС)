@@ -1,0 +1,29 @@
+#include <stdio.h>
+//#include "Header.h"
+#include "..\Staticlib\Header.h"
+#include <locale.h>
+#include <math.h>
+
+int main() {
+    setlocale(LC_ALL, "RUS");
+
+
+    /*HINSTANCE Load;
+    Load = LoadLibrary(L"Dynamiclib.dll");
+    typedef void (*str) (Point A, Point B);
+    str ss;*/
+    
+
+    int one, two, three, four;
+    printf("Введите координаты 1 \n");
+    scanf_s("%d %d", &one, &two);
+    printf("Введите координаты 2 \n");
+    scanf_s("%d %d", &three, &four);
+
+   // ss = (str)GetProcAddress(Load, "ord");
+
+    Point A = { one, two };
+    Point B = { three, four };
+    ord(A, B);
+    abc(A, B);
+}
