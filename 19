@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <locale.h>
+
+using namespace std;
+
+struct Book {
+    string udc;
+    string author;
+    string title;
+    int year;
+    int copies;
+};
+
+bool compareByYear(const Book &a, const Book &b) {
+    return a.year < b.year;
+}
+
+void printBook(const Book &book) {
+    cout << "---------------------------" << endl;
+    cout << "УДК: " << book.udc << endl;
+    cout << "Автор: " << book.author << endl;
+    cout << "название: " << book.title << endl;
+    cout << "Год: " << book.year << endl;
+    cout << "Копии: " << book.copies << endl;
+    cout << "---------------------------" << endl;
+}
+
+int main() {
+    setlocale(LC_ALL, "RUS");
+    vector<Book> library;
+
+    // добавим несколько книг в начальном списке
+    library.push_back({"123", "Author1", "Book1", 2000, 5});
+    library.push_back({"234", "Author2", "Book2", 1995, 3});
+    library.push_back({"345", "Author3", "Book3", 2010, 2});
+
+    // отсортируем книги по году издания
+    sort(library.begin(), library.end(), compareByYear);
+
+    // выведем информацию о каждой книге
+    for (const Book &book : library) {
+        printBook(book);
+    }
+    
+    // добавим новую книгу
+    cout << "Добавить книгу?: ";
+    string answ;
+    cin >> answ;
+    if(answ == "да"){
+        cout << "Введите данные УДК: ";
+        string udc;
+        cin >> udc;
+        cout << "Введите данные Автора: ";
+        string author;
+        cin >> author;
+        cout << "Введите данные Название: ";
+        string title;
+        cin >> title;
+        cout << "Введите данные Год: ";
+        int year;
+        cin >> year;
+        cout << "Введите данные Кол-во копий: ";
+        int copies;
+        cin >> copies;
+
+        library.push_back({udc, author, title, year, copies});
+    }
+    // выведем информацию о каждой книге
+    for (const Book &book : library) {
+        printBook(book);
+    }
+    
+    // удалим книгу
+    cout << "Удалить книгу?: ";
+    cin >> answ;
+    if(answ=="да"){
+    cout << "Какую книгу удалить?: ";
+    string title;
+    cin >> title;
+    auto it = find_if(library.begin(), library.end(), [&](const Book& book) { 
+        return book.title == title;
+    });
+    if (it != library.end()) {
+        library.erase(it);
+    }
+    }
+    // выведем информацию о каждой книге
+    for (const Book &book : library) {
+        printBook(book);
+    }
+
+    // поиск книги по названию
+    cout << "Какую книгу найти?: ";
+    string searchTitle;
+    cin >> searchTitle;
+    
+    auto searchIt = find_if(library.begin(), library.end(), [searchTitle](const Book &book) { 
+    return book.title == searchTitle; 
+    });
+    if (searchIt != library.end()) {
+        cout << "Книга найдена:" << endl;
+        printBook(*searchIt);
+    } else {
+        cout << "Книга не найдена" << endl;
+    }
+}
