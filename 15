@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+
+struct Route {
+    char start_point[50];
+    char end_point[50];
+    int route_number;
+};
+
+int main() {
+    setlocale(LC_ALL, "RU");
+    FILE* file;
+
+    struct Route route;
+    int search_route_number;
+    int found = 0;
+
+    file = fopen("Spravka.dat", "wb");
+    if (file == NULL) {
+        printf("Ошибка при открытии файла.\n");
+    }
+
+    struct Route routes[] = {
+        {"Москва", "Санкт-Петербург", 1},
+        {"Санкт-Петербург", "Новосибирск", 2},
+        {"Новосибирск", "Красноярск", 3}
+    };
+
+    fwrite(routes, sizeof(struct Route), 3, file);
+    fclose(file);
+
+    printf("Введите номер маршрута для поиска: ");
+    scanf("%d", &search_route_number);
+
+    file = fopen("Spravka.dat", "rb");
+    if (file == NULL) {
+        printf("Ошибка при открытии файла.\n");
+        return 1;
+    }
+
+    while (fread(&route, sizeof(struct Route), 1, file)) {
+        if (route.route_number == search_route_number) {
+            printf("Найден маршрут:\n");
+            printf("Начальный пункт: %s\n", route.start_point);
+            printf("Конечный пункт: %s\n", route.end_point);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Маршрут с таким номером не найден.\n");
+    }
+
+    fclose(file);
+}
