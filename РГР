@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+#include "..\Static\Header.h";
+
+
+int main() {
+    setlocale(LC_ALL, "RUS");
+    int n, result;
+    FILE* outputFile = fopen("output.txt", "w");
+
+    if (outputFile == NULL) {
+        printf("Ошибка открытия файла\n");
+        return 1;
+    }
+
+    for (int i = 100; i < 1000; i++) {
+        if (isCube(i)) {
+            int digit1 = i / 100;
+            int digit3 = i % 10;
+            int temp = digit1;
+            digit1 = digit3;
+            digit3 = temp;
+            int result = digit1 * 100 + i % 100 - digit1 + digit3;
+
+            printf("КУБ: %d // БУК: %d", i, result);
+            fprintf(outputFile,"КУБ: %d // БУК: %d", i, result);
+            if (isPrime(result)) {
+                printf(" - Простое (КУБ БУК)\n");
+                fprintf(outputFile, " - Простое (КУБ БУК)\n");
+            }
+            else {
+                printf(" - Не простое\n");
+                fprintf(outputFile, " - Не простое\n");
+            }
+        }
+    }
+}
