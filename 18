@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <locale.h>
+
+using namespace std;
+
+class Subject {
+public:
+    Subject(int value) : value(value) {}
+    int value;
+};
+
+int main() {
+    setlocale(LC_ALL, "RUS");
+
+    int num_objects;
+    cout << "Укажите размерность вектора: ";
+    cin >> num_objects;
+
+
+    vector<Subject> initial_vector;
+    for (int i = 0; i < num_objects; i++) {
+        initial_vector.push_back(Subject(rand() % 100));
+    }
+
+
+    cout << "Исходный вектор:" << endl;
+    for (const Subject& obj : initial_vector) {
+        cout << obj.value << " ";
+    }
+    cout << endl;
+
+    vector<Subject> new_vector;
+    for (const Subject& obj : initial_vector) {
+        if (obj.value % 2==0) {
+            new_vector.push_back(obj);
+        }
+    }
+
+
+    cout << "Новый вектор:" << endl;
+    for (const Subject& obj : new_vector) {
+        cout << obj.value << " ";
+    }
+    cout << endl;
+
+
+    if (new_vector.empty()) {
+        cout << "Новый вектор пуст" << endl;
+    } else {
+
+        sort(new_vector.begin(), new_vector.end(), [](const Subject& a, const Subject& b) {
+            return a.value < b.value;
+        });
+        cout << "Сортированный новый вектор:" << endl;
+        for (const Subject& obj : new_vector) {
+            cout << obj.value << " ";
+        }
+        cout << endl;
+    }
+}
